@@ -7,4 +7,5 @@ setup(
     author="A2",  # 作者名
     packages=find_packages(),  # 使うモジュール一覧を指定する
     license="MIT",  # ライセンス
+    install_requires=open("requirements.txt").readlines(),
 )
