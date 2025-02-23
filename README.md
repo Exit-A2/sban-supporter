@@ -1,7 +1,7 @@
 # SBAN Supporter
 模倣に役立つツール集です。
 ## ツール一覧
-- base_to_midi<br>
+- num_to_midi<br>
   n進数のテキストをMIDIにする関数
 - morse_to_midi<br>
   モールス信号をMIDIファイルに変換する関数

@@ -5,7 +5,7 @@ import math
 import os
 
 
-def base_to_midi(text: str, path: str, time: int = 120):
+def num_to_midi(text: str, path: str, time: int = 120):
     """n進数のテキストをMIDIにする関数
 
     Args:
