@@ -69,8 +69,9 @@ def morse_to_midi(
         elif i in space:
             space_num += time
 
-    mid.tracks.append(track)
     print(track)
+
+    mid.tracks.append(track)
     mid.save(out)
     print(f"{out}を出力しました")
 
@@ -115,8 +116,9 @@ def tenji_to_midi(text: str, out: str, time: int = 120):
         track.append(mido.Message("note_off", note=61, velocity=64, time=0))
         track.append(mido.Message("note_off", note=60, velocity=64, time=0))
 
-    mid.tracks.append(track)
     print(track)
+
+    mid.tracks.append(track)
     mid.save(out)
     print(f"{out}を出力しました")
 
@@ -163,6 +165,7 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
                 note_list[note_list_index]["time"] = (
                     im_time - note_list[note_list_index]["start"] - 1
                 )
+                print(msg)
             elif msg.type == "note_on":
                 draw.rectangle(
                     xy=(im_time, im_height - msg.note, im_length, im_height - msg.note),
@@ -171,7 +174,7 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
                 note_list.append(
                     {"start": im_time, "time": 0, "note": im_height - msg.note}
                 )
-            print(msg)
+                print(msg)
 
     if not os.path.exists(out):
         os.makedirs(out)
