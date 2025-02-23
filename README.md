@@ -11,3 +11,5 @@
   MIDIを画像に変換する関数
 - make_hiragana_small<br>
   aviutlでひらがなを制御文字で小さくする関数(「漢字を大きくする」という方が正しい)
+## 保険
+**A2はPythonもGitHubも何もかも初心者です。**
