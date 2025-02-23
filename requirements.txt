@@ -1,0 +1,3 @@
+regex
+mido
+pillow # pillowではなくPIL
