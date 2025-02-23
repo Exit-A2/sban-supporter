@@ -1,3 +1,4 @@
 regex
 mido
 pillow # pillowではなくPIL
+pathlib
