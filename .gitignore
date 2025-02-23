@@ -2,5 +2,4 @@
 /build
 *.mid
 *.png
-test.py
 __pycache__
