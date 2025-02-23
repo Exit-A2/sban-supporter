@@ -117,7 +117,7 @@ def tenji_to_midi(text: str, out: str, time: int = 120):
 
 
 def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
-    """MIDIを画像に変換する
+    """MIDIを画像に変換する関数
 
     Args:
         path  (str): MIDIファイルのパス
@@ -221,7 +221,7 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
 
 
 def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
-    """aviutlでひらがなを制御文字で小さくする関数(「漢字を大きくする」という方が正しい)
+    """AviUtlでひらがなを制御文字で小さくする関数(「漢字を大きくする」という方が正しい)
 
     Args:
         text (str): もとのテキスト
