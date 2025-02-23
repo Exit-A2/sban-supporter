@@ -265,7 +265,3 @@ def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
     result_text = "\n".join(lines)
 
     return result_text
-
-
-if __name__ == "__main__":
-    morse_to_midi(".-.-.-.-.-", "export.mid")
