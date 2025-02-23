@@ -1,2 +1,4 @@
 /sbansupporter.egg-info
 /build
+*.mid
+*.png

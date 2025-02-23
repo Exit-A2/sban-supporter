@@ -36,16 +36,21 @@ def base_to_midi(text: str, path: str, time: int = 120):
 
 
 def morse_to_midi(
-    text: str, out: str, dot: str, dash: str, space: str, time: int = 120
+    text: str,
+    out: str,
+    time: int = 120,
+    dit: tuple = (".", "・"),
+    dah: tuple = ("-", "ー"),
+    space: tuple = (" ", "　"),
 ):
     """モールス信号をMIDIファイルに変換する関数
 
     Args:
         text  (str): モールス信号
         out   (str): 出力するMIDIファイルのパス
-        dot   (str): ・にあたる文字
-        dash  (str): ーにあたる文字
-        space (str): 空白にあたる文字
+        dot   (tuple): ・にあたる文字
+        dash  (tuple): ーにあたる文字
+        space (tuple): 空白にあたる文字
         time  (int): ・の長さ
     """
     mid = mido.MidiFile()
@@ -53,15 +58,15 @@ def morse_to_midi(
     space_num = 0
 
     for i in list(text):
-        if i == dot:
+        if i in dit:
             track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
             track.append(mido.Message("note_off", note=60, velocity=64, time=time))
             space_num = 0
-        elif i == dash:
+        elif i in dah:
             track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
             track.append(mido.Message("note_off", note=60, velocity=64, time=time * 2))
             space_num = 0
-        elif i == space:
+        elif i in space:
             space_num += time
 
     mid.tracks.append(track)
@@ -257,3 +262,7 @@ def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
     result_text = "\n".join(lines)
 
     return result_text
+
+
+if __name__ == "__main__":
+    morse_to_midi(".-.-.-.-.-", "export.mid")
