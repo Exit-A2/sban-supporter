@@ -74,6 +74,87 @@ def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
     return result_text
 
 
+def morse_to_midi(
+    text: str, out: str, dot: str, dash: str, space: str, time: int = 120
+):
+    """モールス信号をMIDIファイルに変換する関数
+
+    Args:
+        text  (str): モールス信号
+        out   (str): 出力するMIDIファイルのパス
+        dot   (str): ・にあたる文字
+        dash  (str): ーにあたる文字
+        space (str): 空白にあたる文字
+        time  (int): ・の長さ
+    """
+    mid = mido.MidiFile()
+    track = mido.MidiTrack()
+    space_num = 0
+
+    for i in list(text):
+        if i == dot:
+            track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
+            track.append(mido.Message("note_off", note=60, velocity=64, time=time))
+            space_num = 0
+        elif i == dash:
+            track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
+            track.append(mido.Message("note_off", note=60, velocity=64, time=time * 2))
+            space_num = 0
+        elif i == space:
+            space_num += time
+
+    mid.tracks.append(track)
+    print(track)
+    mid.save(out)
+    print(f"{out}を出力しました")
+
+
+def tenji_to_midi(text: str, out: str, time: int = 120):
+    """点字のテキストをMIDIに変換する関数
+
+    Args:
+        text (str): 点字のテキスト
+        out  (str): 出力するMIDIファイル名
+        time (int): 1クリックあたりの長さ
+    """
+    text_list = list(text)
+    base16 = [x.encode(encoding="unicode-escape") for x in text_list]
+    base16_str = [x.decode(encoding="utf-8")[2:] for x in base16]
+    base10 = [int(x, 16) for x in base16_str]
+    base10_format = [x - 10240 for x in base10]
+    base2 = [bin(x)[2:] for x in base10_format]
+    base2_filled = [x.zfill(6) for x in base2]
+    base2_split = []
+    for x in base2_filled:
+        base2_split.append(x[3:])
+        base2_split.append(x[:3])
+    print(base2_split)
+
+    mid = mido.MidiFile()
+    track = mido.MidiTrack()
+    space = 0
+
+    for x in base2_split:
+        if x == "000":
+            space += time
+            continue
+        for y in range(len(x)):
+            if x[y] == "1":
+                track.append(
+                    mido.Message("note_on", note=60 + int(y), velocity=64, time=space)
+                )
+                space = 0
+                print(track[-1])
+        track.append(mido.Message("note_off", note=62, velocity=64, time=time))
+        track.append(mido.Message("note_off", note=61, velocity=64, time=0))
+        track.append(mido.Message("note_off", note=60, velocity=64, time=0))
+
+    mid.tracks.append(track)
+    print(track)
+    mid.save(out)
+    print(f"{out}を出力しました")
+
+
 def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
     """MIDIを画像に変換する
 
@@ -176,92 +257,3 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
         export_num += 1
 
     return
-
-
-def morse_to_midi(
-    text: str, out: str, dot: str, dash: str, space: str, time: int = 120
-):
-    """モールス信号をMIDIファイルに変換する関数
-
-    Args:
-        text  (str): モールス信号
-        out   (str): 出力するMIDIファイルのパス
-        dot   (str): ・にあたる文字
-        dash  (str): ーにあたる文字
-        space (str): 空白にあたる文字
-        time  (int): ・の長さ
-    """
-    mid = mido.MidiFile()
-    track = mido.MidiTrack()
-    space_num = 0
-
-    for i in list(text):
-        if i == dot:
-            track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
-            track.append(mido.Message("note_off", note=60, velocity=64, time=time))
-            space_num = 0
-        elif i == dash:
-            track.append(mido.Message("note_on", note=60, velocity=64, time=space_num))
-            track.append(mido.Message("note_off", note=60, velocity=64, time=time * 2))
-            space_num = 0
-        elif i == space:
-            space_num += time
-
-    mid.tracks.append(track)
-    print(track)
-    mid.save(out)
-    print(f"{out}を出力しました")
-
-
-def tenji_to_midi(text: str, out: str, time: int = 120):
-    """点字のテキストをMIDIに変換する関数
-
-    Args:
-        text (str): 点字のテキスト
-        out  (str): 出力するMIDIファイル名
-        time (int): 1クリックあたりの長さ
-    """
-    text_list = list(text)
-    base16 = [x.encode(encoding="unicode-escape") for x in text_list]
-    base16_str = [x.decode(encoding="utf-8")[2:] for x in base16]
-    base10 = [int(x, 16) for x in base16_str]
-    base10_format = [x - 10240 for x in base10]
-    base2 = [bin(x)[2:] for x in base10_format]
-    base2_filled = [x.zfill(6) for x in base2]
-    base2_split = []
-    for x in base2_filled:
-        base2_split.append(x[3:])
-        base2_split.append(x[:3])
-    print(base2_split)
-
-    mid = mido.MidiFile()
-    track = mido.MidiTrack()
-    space = 0
-
-    for x in base2_split:
-        if x == "000":
-            space += time
-            continue
-        for y in range(len(x)):
-            if x[y] == "1":
-                track.append(
-                    mido.Message("note_on", note=60 + int(y), velocity=64, time=space)
-                )
-                space = 0
-                print(track[-1])
-        track.append(mido.Message("note_off", note=62, velocity=64, time=time))
-        track.append(mido.Message("note_off", note=61, velocity=64, time=0))
-        track.append(mido.Message("note_off", note=60, velocity=64, time=0))
-
-    mid.tracks.append(track)
-    print(track)
-    mid.save(out)
-    print(f"{out}を出力しました")
-
-
-if __name__ == "__main__":
-    base_to_midi(
-        "1101100111010100110000101010010010100100101101111010010011000110",
-        "export.mid",
-        240,
-    )
