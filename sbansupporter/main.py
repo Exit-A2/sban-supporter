@@ -226,7 +226,9 @@ def midi_to_num(path: str) -> list:
     """
     mid = mido.MidiFile(path)
 
-    result = [msg.note for msg in mid.tracks[0] if msg.type == "note_on"]
+    result = []
+    for i, track in enumerate(mid.tracks):
+        result.append([msg.note for msg in track if msg.type == "note_on"])
 
     return result
 
