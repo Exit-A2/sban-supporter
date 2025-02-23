@@ -228,6 +228,19 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
     return
 
 
+def midi_to_num(path: str) -> list:
+    """MIDIから音の高さだけを抜き出す関数
+
+    Args:
+        path (str): MIDIファイルのパス
+    """
+    mid = mido.MidiFile(path)
+
+    result = [msg.note for msg in mid.tracks[0] if msg.type == "note_on"]
+
+    return result
+
+
 def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
     """AviUtlでひらがなを制御文字で小さくする関数(「漢字を大きくする」という方が正しい)
 
