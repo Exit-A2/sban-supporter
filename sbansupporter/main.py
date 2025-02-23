@@ -241,13 +241,13 @@ def midi_to_num(path: str) -> list:
     return result
 
 
-def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
+def make_hiragana_small(text: str, size: int = 64, multiline: bool = False) -> str:
     """AviUtlでひらがなを制御文字で小さくする関数(「漢字以外を小さくする」という方が正しい)
 
     Args:
-        text (str): 元のテキスト
-        size (int): ひらがなのサイズ
-        mode (int): モード (0は1行ずつ表示する場合向け、1は複数行同時に表示する場合)
+        text      (str) : 元のテキスト
+        size      (int) : ひらがなのサイズ
+        multiline (bool): Trueの場合複数行同時に表示する人向け
     """
 
     text_list = text.splitlines()
@@ -271,7 +271,7 @@ def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
                 # 前の字が漢字で、今の字がひらがなの場合
                 lines[-1] += "<s" + str_size + ">" + line[i]
             is_pre_kanji = is_kanji
-        if mode == 0:
+        if not multiline:
             is_pre_kanji = True
         print(f'"{line}"->"{lines[-1]}"')
 
