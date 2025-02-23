@@ -123,14 +123,14 @@ def tenji_to_midi(text: str, out: str, time: int = 120):
     print(f"{out}を出力しました")
 
 
-def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
+def midi_to_image(path: str, out: str, length: int = 12, progress: bool = False):
     """MIDIを画像に変換する関数
 
     Args:
-        path  (str): MIDIファイルのパス
-        out   (str): 出力するフォルダのパス
-        length(int): 1ピクセルあたりの長さ
-        mode  (int): モード（0=最終画像のみ、1=経過画像も）
+        path    (str) : MIDIファイルのパス
+        out     (str) : 出力するフォルダのパス
+        length  (int) : 1ピクセルあたりの長さ
+        progress(bool): Trueの場合経過画像も出力
     """
 
     im_height = 120  # 画像の高さ
@@ -186,10 +186,10 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
         im.save(f"{out}\\export.png", quality=95)
         print(f"{out}\\export.pngを出力しました")
 
-    if mode != 1:
+    if not progress:
         return
 
-    # ここからmode1のみ
+    # ここから経過画像
     im = Image.new("RGB", (im_length, im_height), (0, 0, 0))
     draw = ImageDraw.Draw(im)
     im_time = 0
