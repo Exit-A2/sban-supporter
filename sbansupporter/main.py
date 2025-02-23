@@ -2,7 +2,7 @@ import regex
 import mido
 from PIL import Image, ImageDraw
 import math
-import os
+from pathlib import Path
 
 
 def num_to_midi(text: str, path: str, time: int = 120) -> None:
@@ -130,7 +130,7 @@ def midi_to_image(
 
     Args:
         path    (str) : MIDIファイルのパス
-        out     (str) : 出力するフォルダのパス
+        out     (str) : 出力する画像ファイルのパス
         length  (int) : 1ピクセルあたりの長さ
         progress(bool): Trueの場合経過画像も出力
     """
@@ -178,15 +178,10 @@ def midi_to_image(
                 )
                 print(msg)
 
-    if not os.path.exists(out):
-        os.makedirs(out)
-
-    if out[-1] == "\\":  # パスの最後にバックスラッシュがつく場合
-        im.save(f"{out}export.png", quality=95)
-        print(f"{out}export.pngを出力しました")
-    else:
-        im.save(f"{out}\\export.png", quality=95)
-        print(f"{out}\\export.pngを出力しました")
+    outpath = Path(out)
+    outpath.parent.mkdir(parents=True, exist_ok=True)
+    im.save(out, quality=95)
+    print(f"{out}を出力しました")
 
     if not progress:
         return
@@ -214,16 +209,9 @@ def midi_to_image(
             if len(note_list) <= i:
                 break
 
-        if out[-1] == "\\":  # パスの最後にバックスラッシュがつく場合
-            if not os.path.exists(f"{out}export"):
-                os.makedirs(f"{out}export")
-            im.save(f"{out}export\\export{export_num}.png", quality=95)
-            print(f"{out}export\\export{export_num}.pngを出力しました")
-        else:
-            if not os.path.exists(f"{out}\\export"):
-                os.makedirs(f"{out}\\export")
-            im.save(f"{out}\\export\\export{export_num}.png", quality=95)
-            print(f"{out}\\export\\export{export_num}.pngを出力しました")
+        (outpath.parent / "export").mkdir(parents=True, exist_ok=True)
+        im.save(str(outpath.parent / "export" / f"{export_num}.png"), quality=95)
+        print(f"{outpath.parent / "export" / f"{export_num}.png"}を出力しました")
 
         export_num += 1
 
