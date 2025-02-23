@@ -241,7 +241,7 @@ def midi_to_num(path: str) -> list:
     return result
 
 
-def make_hiragana_small(text: str, size: int = 60, multiline: bool = False) -> str:
+def make_hiragana_small(text: str, size: int = 64, multiline: bool = False) -> str:
     """AviUtlでひらがなを制御文字で小さくする関数(「漢字以外を小さくする」という方が正しい)
 
     Args:
