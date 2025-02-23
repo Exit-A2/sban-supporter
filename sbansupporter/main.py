@@ -6,11 +6,11 @@ import os
 
 
 def num_to_midi(text: str, path: str, time: int = 120):
-    """n進数のテキストをMIDIにする関数
+    """バイナリデータのテキストをMIDIに変換する関数(36進数まで対応してます)
 
     Args:
         text (str): テキスト
-        path (str): 出力するMIDIファイル
+        path (str): 出力するMIDIファイルのパス
         time (int): 1クリックあたりの長さ
     """
 
@@ -43,15 +43,15 @@ def morse_to_midi(
     dah: tuple = ("-", "ー"),
     space: tuple = (" ", "　"),
 ):
-    """モールス信号をMIDIファイルに変換する関数
+    """モールス信号のテキストをMIDIに変換する関数
 
     Args:
-        text  (str): モールス信号
+        text  (str): モールス信号のテキスト
         out   (str): 出力するMIDIファイルのパス
-        dot   (tuple): ・にあたる文字
-        dash  (tuple): ーにあたる文字
+        dit   (tuple): 点にあたる文字
+        dah  (tuple): 線にあたる文字
         space (tuple): 空白にあたる文字
-        time  (int): ・の長さ
+        time  (int): 点あたりの長さ
     """
     mid = mido.MidiFile()
     track = mido.MidiTrack()
@@ -81,7 +81,7 @@ def tenji_to_midi(text: str, out: str, time: int = 120):
 
     Args:
         text (str): 点字のテキスト
-        out  (str): 出力するMIDIファイル名
+        out  (str): 出力するMIDIファイルのパス
         time (int): 1クリックあたりの長さ
     """
     text_list = list(text)
@@ -129,7 +129,7 @@ def midi_to_image(path: str, out: str, length: int = 12, mode: int = 0):
     Args:
         path  (str): MIDIファイルのパス
         out   (str): 出力するフォルダのパス
-        length(int): 1ピクセルあたりのMIDI内時間(デフォルト12)
+        length(int): 1ピクセルあたりの長さ
         mode  (int): モード（0=最終画像のみ、1=経過画像も）
     """
 
@@ -242,10 +242,10 @@ def midi_to_num(path: str) -> list:
 
 
 def make_hiragana_small(text: str, size: int = 60, mode: int = 0) -> str:
-    """AviUtlでひらがなを制御文字で小さくする関数(「漢字を大きくする」という方が正しい)
+    """AviUtlでひらがなを制御文字で小さくする関数(「漢字以外を小さくする」という方が正しい)
 
     Args:
-        text (str): もとのテキスト
+        text (str): 元のテキスト
         size (int): ひらがなのサイズ
         mode (int): モード (0は1行ずつ表示する場合向け、1は複数行同時に表示する場合)
     """
