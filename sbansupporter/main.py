@@ -5,7 +5,7 @@ import math
 import os
 
 
-def num_to_midi(text: str, path: str, time: int = 120):
+def num_to_midi(text: str, path: str, time: int = 120) -> None:
     """バイナリデータのテキストをMIDIに変換する関数(36進数まで対応してます)
 
     Args:
@@ -42,7 +42,7 @@ def morse_to_midi(
     dit: tuple = (".", "・"),
     dah: tuple = ("-", "ー"),
     space: tuple = (" ", "　"),
-):
+) -> None:
     """モールス信号のテキストをMIDIに変換する関数
 
     Args:
@@ -76,7 +76,7 @@ def morse_to_midi(
     print(f"{out}を出力しました")
 
 
-def tenji_to_midi(text: str, out: str, time: int = 120):
+def tenji_to_midi(text: str, out: str, time: int = 120) -> None:
     """点字のテキストをMIDIに変換する関数
 
     Args:
@@ -123,7 +123,9 @@ def tenji_to_midi(text: str, out: str, time: int = 120):
     print(f"{out}を出力しました")
 
 
-def midi_to_image(path: str, out: str, length: int = 12, progress: bool = False):
+def midi_to_image(
+    path: str, out: str, length: int = 12, progress: bool = False
+) -> None:
     """MIDIを画像に変換する関数
 
     Args:
