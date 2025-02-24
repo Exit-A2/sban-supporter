@@ -1,3 +1,5 @@
+"""模倣に役立つツール集"""
+
 import regex
 import mido
 from PIL import Image, ImageDraw
